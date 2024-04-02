@@ -1,0 +1,270 @@
+{
+  "revision" : 50,
+  "compression" : false,
+  "dataAnalyzer" : false,
+  "replicas" : 1,
+  "openApiUuid" : null,
+  "currentProfileUuid" : "cb34a175-7664-438e-9d8f-481373aa66ff",
+  "parameterGroupUuids" : [ ],
+  "repoResourceUuids" : [ "a60799d4-2276-422a-8476-480551c87efc" ],
+  "routeDefinitions" : [ {
+    "id" : 1,
+    "camelRouteId" : "route-1",
+    "enabled" : true,
+    "routeId" : 1,
+    "route" : [ {
+      "name" : "timer",
+      "nodeId" : "timer: 00",
+      "description" : "timer: 00",
+      "properties" : {
+        "_type" : "timer",
+        "active" : true,
+        "advancedParameters" : [ ],
+        "camelGroup" : "scheduled trigger",
+        "daemon" : true,
+        "delay" : "1000",
+        "fixedRate" : false,
+        "name" : "timer",
+        "period" : "10000",
+        "repeatCount" : "0",
+        "setScheduleTime" : false,
+        "time" : "2021-12-31 00:00:00",
+        "timerName" : "timer",
+        "url" : ""
+      },
+      "_type" : "timer",
+      "isNotActive" : false
+    }, {
+      "name" : "setBody",
+      "nodeId" : "setBody: 00",
+      "description" : "setBody: 00",
+      "properties" : {
+        "_type" : "setBody",
+        "active" : true,
+        "addNamespaces" : false,
+        "camelGroup" : "core feature",
+        "expression" : "new Random().nextInt(5) + 1",
+        "language" : "Groovy",
+        "name" : "setBody",
+        "namespaces" : [ ],
+        "suppressExceptions" : false,
+        "url" : ""
+      },
+      "_type" : "setBody",
+      "isNotActive" : false
+    }, {
+      "name" : "log",
+      "nodeId" : "log: 00",
+      "description" : "log: 00",
+      "properties" : {
+        "_type" : "log",
+        "active" : true,
+        "advancedParameters" : [ ],
+        "camelGroup" : "core feature",
+        "level" : "INFO",
+        "logType" : "EIP",
+        "loggerName" : "log",
+        "message" : "Generated Number: ${body}",
+        "multiline" : false,
+        "name" : "log",
+        "showAll" : false,
+        "showBody" : true,
+        "showBodyType" : true,
+        "showCaughtException" : false,
+        "showExchangeId" : false,
+        "showHeaders" : false,
+        "showProperties" : false,
+        "showStackTrace" : false,
+        "toDynamicEndpoint" : false,
+        "url" : ""
+      },
+      "_type" : "log",
+      "isNotActive" : false
+    }, {
+      "name" : "messageRouter",
+      "nodeId" : "messageRouter: 00",
+      "description" : "messageRouter: 00",
+      "properties" : {
+        "_type" : "messageRouter",
+        "active" : true,
+        "camelGroup" : "data routing",
+        "name" : "messageRouter",
+        "url" : ""
+      },
+      "_type" : "messageRouter",
+      "branches" : [ {
+        "type" : "when",
+        "label" : "when",
+        "route" : [ {
+          "name" : "direct",
+          "nodeId" : "direct: beanProcess",
+          "description" : "beanProcess",
+          "properties" : {
+            "_type" : "direct",
+            "active" : true,
+            "advancedParameters" : [ ],
+            "camelGroup" : "messaging connector",
+            "endpointName" : "beanProcess",
+            "name" : "direct",
+            "toDynamicEndpoint" : false,
+            "url" : ""
+          },
+          "_type" : "direct",
+          "isNotActive" : false
+        } ],
+        "properties" : {
+          "addNamespaces" : "false",
+          "condition" : "${body} <= 2",
+          "language" : "Simple",
+          "namespaces" : [ ],
+          "suppressExceptions" : "false"
+        }
+      }, {
+        "type" : "when",
+        "label" : "when",
+        "route" : [ {
+          "name" : "direct",
+          "nodeId" : "direct: jetletProcess",
+          "description" : "jetletProcess",
+          "properties" : {
+            "_type" : "direct",
+            "active" : true,
+            "advancedParameters" : [ ],
+            "camelGroup" : "messaging connector",
+            "endpointName" : "jetletProcess",
+            "name" : "direct",
+            "toDynamicEndpoint" : false,
+            "url" : ""
+          },
+          "_type" : "direct",
+          "isNotActive" : false
+        } ],
+        "properties" : {
+          "addNamespaces" : "false",
+          "condition" : "${body} > 2",
+          "language" : "Simple",
+          "namespaces" : [ ],
+          "suppressExceptions" : "false"
+        }
+      }, {
+        "type" : "route",
+        "label" : "route",
+        "route" : [ {
+          "name" : "log",
+          "nodeId" : "log: 01",
+          "description" : "log: 01",
+          "properties" : {
+            "_type" : "log",
+            "active" : true,
+            "advancedParameters" : [ ],
+            "camelGroup" : "core feature",
+            "level" : "INFO",
+            "logType" : "EIP",
+            "loggerName" : "log",
+            "message" : "Result: ${body} - Property ErrorProcessed: ${exchangeProperty.ErrorProcessed}",
+            "multiline" : false,
+            "name" : "log",
+            "showAll" : false,
+            "showBody" : true,
+            "showBodyType" : true,
+            "showCaughtException" : false,
+            "showExchangeId" : false,
+            "showHeaders" : false,
+            "showProperties" : false,
+            "showStackTrace" : false,
+            "toDynamicEndpoint" : false,
+            "url" : ""
+          },
+          "_type" : "log",
+          "isNotActive" : false
+        } ],
+        "properties" : { }
+      } ],
+      "isNotActive" : false
+    } ]
+  }, {
+    "id" : 2,
+    "camelRouteId" : "route-2",
+    "enabled" : true,
+    "routeId" : 2,
+    "route" : [ {
+      "name" : "direct",
+      "nodeId" : "direct: beanProcess-01",
+      "description" : "beanProcess",
+      "properties" : {
+        "_type" : "direct",
+        "active" : true,
+        "advancedParameters" : [ ],
+        "camelGroup" : "messaging connector",
+        "endpointName" : "beanProcess",
+        "name" : "direct",
+        "url" : ""
+      },
+      "_type" : "direct",
+      "isNotActive" : false
+    }, {
+      "name" : "bean",
+      "nodeId" : "bean: 00",
+      "description" : "bean: 00",
+      "properties" : {
+        "_type" : "bean",
+        "active" : true,
+        "advancedParameters" : [ ],
+        "beanClass" : "Bean.class",
+        "beanId" : "beanId",
+        "beanName" : "beanHandler",
+        "beanType" : "Component",
+        "camelGroup" : "data transformation",
+        "method" : "methodToBeCalled(${header.someHeader})",
+        "name" : "bean",
+        "specifyTheMethod" : false,
+        "toDynamicEndpoint" : false,
+        "url" : ""
+      },
+      "_type" : "bean",
+      "isNotActive" : false
+    } ]
+  }, {
+    "id" : 3,
+    "camelRouteId" : "route-3",
+    "enabled" : true,
+    "routeId" : 3,
+    "route" : [ {
+      "name" : "direct",
+      "nodeId" : "direct: jetletProcess-01",
+      "description" : "jetletProcess",
+      "properties" : {
+        "_type" : "direct",
+        "active" : true,
+        "advancedParameters" : [ ],
+        "camelGroup" : "messaging connector",
+        "endpointName" : "jetletProcess",
+        "name" : "direct",
+        "url" : ""
+      },
+      "_type" : "direct",
+      "isNotActive" : false
+    }, {
+      "name" : "errorhandler-sink",
+      "nodeId" : "kameletSink: 00",
+      "description" : "kameletSink: 00",
+      "properties" : {
+        "_type" : "kameletSink",
+        "active" : true,
+        "camelGroup" : "jetic",
+        "name" : "errorhandler-sink",
+        "url" : ""
+      },
+      "_type" : "kameletSink",
+      "isNotActive" : false
+    } ]
+  } ],
+  "traits" : [ ],
+  "id" : "7e367755-71ec-4359-84ce-8aaaf2b64bf4",
+  "name" : "Jetlet-Bean-Error",
+  "description" : "Jetlet-Bean-Error",
+  "createdAt" : "2024-04-02T01:45:49.525776996",
+  "updatedAt" : "2024-04-02T02:19:07.858425623",
+  "createdBy" : "123e4567-e89b-12d3-a456-426655440011",
+  "updatedBy" : "123e4567-e89b-12d3-a456-426655440011"
+}

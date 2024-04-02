@@ -1,0 +1,154 @@
+{
+  "group" : "Jetic",
+  "icon" : "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTEgMTVoLTJ2LTJoMnYyem0wLTRoLTJWN2gydjZ6IiBmaWxsPSIjYjI0NzQ3Ii8+PC9zdmc+",
+  "type" : "SINK",
+  "properties" : [ ],
+  "routeDefinitions" : [ {
+    "id" : 1,
+    "camelRouteId" : "route-1",
+    "enabled" : true,
+    "routeId" : 1,
+    "route" : [ {
+      "name" : "log",
+      "nodeId" : "log: 00",
+      "description" : "log: 00",
+      "properties" : {
+        "_type" : "log",
+        "active" : true,
+        "advancedParameters" : [ ],
+        "camelGroup" : "core feature",
+        "level" : "INFO",
+        "logType" : "EIP",
+        "loggerName" : "log",
+        "message" : "Jetlet Error: ${body}",
+        "multiline" : false,
+        "name" : "log",
+        "showAll" : false,
+        "showBody" : true,
+        "showBodyType" : true,
+        "showCaughtException" : false,
+        "showExchangeId" : false,
+        "showHeaders" : false,
+        "showProperties" : false,
+        "showStackTrace" : false,
+        "url" : ""
+      },
+      "_type" : "log",
+      "isNotActive" : false
+    }, {
+      "name" : "messageRouter",
+      "nodeId" : "messageRouter: 00",
+      "description" : "messageRouter: 00",
+      "properties" : {
+        "_type" : "messageRouter",
+        "active" : true,
+        "camelGroup" : "data routing",
+        "name" : "messageRouter",
+        "url" : ""
+      },
+      "_type" : "messageRouter",
+      "branches" : [ {
+        "type" : "when",
+        "label" : "when",
+        "route" : [ {
+          "name" : "setBody",
+          "nodeId" : "setBody: 00",
+          "description" : "setBody: 00",
+          "properties" : {
+            "_type" : "setBody",
+            "active" : true,
+            "advancedParameters" : [ ],
+            "camelGroup" : "core feature",
+            "expression" : "Got Error 3",
+            "language" : "Simple",
+            "name" : "setBody",
+            "url" : ""
+          },
+          "_type" : "setBody",
+          "isNotActive" : false
+        } ],
+        "properties" : {
+          "condition" : "${body} == 3",
+          "language" : "Simple"
+        }
+      }, {
+        "type" : "when",
+        "label" : "when",
+        "route" : [ {
+          "name" : "setBody",
+          "nodeId" : "setBody: 01",
+          "description" : "setBody: 01",
+          "properties" : {
+            "_type" : "setBody",
+            "active" : true,
+            "advancedParameters" : [ ],
+            "camelGroup" : "core feature",
+            "expression" : "Got Error 4",
+            "language" : "Simple",
+            "name" : "setBody",
+            "url" : ""
+          },
+          "_type" : "setBody",
+          "isNotActive" : false
+        } ],
+        "properties" : {
+          "condition" : "${body} == 4",
+          "language" : "Simple"
+        }
+      }, {
+        "type" : "otherwise",
+        "label" : "otherwise",
+        "route" : [ {
+          "name" : "setBody",
+          "nodeId" : "setBody: 02",
+          "description" : "setBody: 02",
+          "properties" : {
+            "_type" : "setBody",
+            "active" : true,
+            "advancedParameters" : [ ],
+            "camelGroup" : "core feature",
+            "expression" : "Got Unkown Error",
+            "language" : "Simple",
+            "name" : "setBody",
+            "url" : ""
+          },
+          "_type" : "setBody",
+          "isNotActive" : false
+        } ],
+        "properties" : { }
+      }, {
+        "type" : "route",
+        "label" : "route",
+        "route" : [ {
+          "name" : "setProperties",
+          "nodeId" : "setProperties: 00",
+          "description" : "setProperties: 00",
+          "properties" : {
+            "_type" : "setProperties",
+            "active" : true,
+            "camelGroup" : "core feature",
+            "name" : "setProperties",
+            "propertyList" : [ {
+              "language" : "Constant",
+              "propertyName" : "ErrorProcessed",
+              "propertyValue" : "true",
+              "uuid" : "554c3cea-634d-4880-af1b-5a1c16537cd1"
+            } ],
+            "url" : ""
+          },
+          "_type" : "setProperties",
+          "isNotActive" : false
+        } ],
+        "properties" : { }
+      } ],
+      "isNotActive" : false
+    } ]
+  } ],
+  "id" : "3c259666-9236-4294-9a15-18f07bb7a267",
+  "name" : "ErrorHandler",
+  "description" : "ErrorHandler",
+  "createdAt" : "2024-04-02T01:49:22.587951865",
+  "updatedAt" : "2024-04-02T02:00:20.980403924",
+  "createdBy" : "123e4567-e89b-12d3-a456-426655440011",
+  "updatedBy" : "123e4567-e89b-12d3-a456-426655440011"
+}

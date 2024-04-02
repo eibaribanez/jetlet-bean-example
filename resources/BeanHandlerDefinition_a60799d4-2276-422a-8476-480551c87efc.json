@@ -1,0 +1,14 @@
+{
+  "type" : "SOURCE_DEFINITIONS",
+  "properties" : {
+    "content" : "import org.apache.camel.BindToRegistry;\nimport org.apache.camel.Exchange;\nimport org.apache.camel.Processor;\n\npublic class BeanHandler implements Processor {\n\n    @Override\n    public void process(Exchange exchange) throws Exception {\n        Integer body = exchange.getIn().getBody(Integer.class);\n        String message;\n        if (body != null && body == 1) {\n            message = \"Got Code \" + body;\n        } else {\n            message = \"Got Unknown Code \" + body;\n        }\n        exchange.setProperty(\"ErrorProcessed\", false);\n        exchange.getMessage().setBody(message);\n    }\n\n    @BindToRegistry\n    public Processor beanHandler() {\n        return this;\n    }\n}",
+    "filename" : "BeanHandler.java"
+  },
+  "id" : "a60799d4-2276-422a-8476-480551c87efc",
+  "name" : "BeanHandlerDefinition",
+  "description" : "BeanHandlerDefinition",
+  "createdAt" : "2024-04-02T02:10:46.629211672",
+  "updatedAt" : "2024-04-02T02:18:15.023244307",
+  "createdBy" : "123e4567-e89b-12d3-a456-426655440011",
+  "updatedBy" : "123e4567-e89b-12d3-a456-426655440011"
+}
