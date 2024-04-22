@@ -3,9 +3,9 @@ apiVersion: "camel.apache.org/v1"
 kind: "Integration"
 metadata:
   labels:
-    jetic.io/deployment.uuid: "c33c20fe-f8e3-4f37-9c58-4132f821cd71"
+    jetic.io/deployment.uuid: "388e4cd9-646e-4881-8267-2dc89bda4b0a"
     jetic.io/integration.name: "Jar-and-Classic-Bean"
-    jetic.io/integration.revision: "20"
+    jetic.io/integration.revision: "70"
     jetic.io/integration.uuid: "a8e2e9e1-c62e-437d-b512-82a77527cea1"
     jetic.io/log.level: "INFO"
     jetic.io/data.analyzer: "false"
@@ -14,13 +14,21 @@ metadata:
   name: "jar-and-classic-bean"
 spec:
   configuration:
+  - type: "env"
+    value: "MULTIPLIERJARFILE=2024-04-22T21:02:49.007122910"
   - type: "property"
     value: "quarkus.log.console.color=true"
   - type: "property"
     value: "quarkus.log.console.level=INFO"
   dependencies: []
   replicas: 1
-  resources: []
+  resources:
+  - compression: false
+    contentKey: "MultiplierFile.jar"
+    contentType: "text/plain; charset=utf-8"
+    name: "MultiplierFile.jar"
+    rawContent: "UEsDBAoAAAgAAAK4llgAAAAAAAAAAAAAAAAJAAQATUVUQS1JTkYv/soAAFBLAwQUAAgICAACuJZYAAAAAAAAAAAAAAAAFAAAAE1FVEEtSU5GL01BTklGRVNULk1G803My0xLLS7RDUstKs7Mz7NSMNQz4OVyLkpNLElN0XWqtFIwAoroGSloOOYmVuXn6SXn5yp45iXrafJy8XIBAFBLBwjqwbcMQAAAAD8AAABQSwMEFAAICAgAALiWWAAAAAAAAAAAAAAAACIAAABjb20vamF2YS9leGFtcGxlcy9NdWx0aXBsaWVyLmNsYXNzbVBNS8NAEH3TNEmNqW39qAp68CC0VczRQ8WLIASqPSi9b+Jat2ySkiZF/5VeVDz4A/xR4m4qFDQL+2b3zXszw3x9f3wCOMWugwoMG1UXJixCc8LmzJMsHnvDYMLDjGCdiVhk5wSj0x05qGHFhuNiFS6htZT7ccbHPCXURJyNmMx54fC1Y81FA02CPdf88J7Q7vjdwT9z38Y6YS9MIq/I8UcWTSWfeVe5zMRUCl2/epHcqdqNgYj5dR4FPL1lgdRMtFA9LdgZod8p6VFClY1CcG6SPA35pSiKL0c40WIcoKVWp08FpJencEP99lUkFc3eG+hFPQibCq2CNBRuof0rPdS7V7F+9Ar7WN2Hd9Sf/1hMhdtFl50fUEsHCBtbzWwXAQAAtgEAAFBLAQIKAAoAAAgAAAK4llgAAAAAAAAAAAAAAAAJAAQAAAAAAAAAAAAAAAAAAABNRVRBLUlORi/+ygAAUEsBAhQAFAAICAgAAriWWOrBtwxAAAAAPwAAABQAAAAAAAAAAAAAAAAAKwAAAE1FVEEtSU5GL01BTklGRVNULk1GUEsBAhQAFAAICAgAALiWWBtbzWwXAQAAtgEAACIAAAAAAAAAAAAAAAAArQAAAGNvbS9qYXZhL2V4YW1wbGVzL011bHRpcGxpZXIuY2xhc3NQSwUGAAAAAAMAAwDNAAAAFAIAAAAA"
+    type: "data"
   sources:
   - compression: false
     content: |-
@@ -35,32 +43,39 @@ spec:
 
       import org.apache.camel.LoggingLevel
 
-      from('timer:timer?daemon=true&delay=2000&fixedRate=false&period=10000&repeatCount=0').routeId('route-1')
+      from('timer:timer?daemon=true&delay=1000&fixedRate=false&period=10000&repeatCount=0').routeId('route-1')
           .log(LoggingLevel.INFO, 'log', 'Classic Jetic Bean').id('log: 00')
           .setHeader('n1').constant('2').id('setHeaders: 00-00')
           .setHeader('n2').constant('4').id('setHeaders: 00-01')
           .to('bean:Calculator?method=sumNumbers(${header.n1}, ${header.n2})').id('bean: 00')
           .log(LoggingLevel.INFO, 'log', 'Result: ${body}').id('log: 01')
+
+      from('timer:timer?daemon=true&delay=2000&fixedRate=false&period=10000&repeatCount=0').routeId('route-2')
+          .log(LoggingLevel.INFO, 'log', 'Source Definition Bean Reading Body').id('log: 02')
+          .setBody().groovy('new Random().nextInt(5) + 1').id('setBody: 00')
+          .to('bean:beanHandler').id('bean: 01')
+          .log(LoggingLevel.INFO, 'log', 'Result: ${body}').id('log: 03')
+
+      from('timer:timer?daemon=true&delay=3000&fixedRate=false&period=10000&repeatCount=0').routeId('route-3')
+          .log(LoggingLevel.INFO, 'log', 'Multiply Number Using Jar File').id('log: 04')
+          .setHeader('n1').constant('2').id('setHeaders: 01-00')
+          .setHeader('n2').constant('4').id('setHeaders: 01-01')
+          .to('bean:multiplier?method=multiplyNumbers(${header.n1}, ${header.n2})').id('bean: 02')
+          .log(LoggingLevel.INFO, 'log', 'Result: ${body}').id('log: 05')
     name: "Jar-and-Classic-Bean.groovy"
-  - content: |-
-      import org.apache.camel.BindToRegistry;
-      import org.apache.camel.Processor;
-      import org.apache.camel.Handler;
-
-      public class Calculator extends org.apache.camel.builder.RouteBuilder {
-
-          @Handler
-          public Integer sumNumbers(Integer n1, Integer n2) {
-              return n1+n2;
-          }
-
-          @Override
-          public void configure() {}
-      }
+  - content: "import org.apache.camel.BindToRegistry;\nimport com.java.examples.Multiplier;\n\npublic class MultiplierJavaClassImport {\n    @BindToRegistry\n    public Multiplier multiplier() {\n\t\t\t\t//beanHandler is the one that get in the registry\n        return new Multiplier();\n    }\n}"
+    name: "MultiplierJavaClassImport.java"
+  - content: "import org.apache.camel.BindToRegistry;\nimport org.apache.camel.Exchange;\nimport org.apache.camel.Processor;\n\npublic class BeanHandler implements Processor {\n\n    @Override\n    public void process(Exchange exchange) throws Exception {\n        Integer body = exchange.getIn().getBody(Integer.class);\n        String message;\n        if (body != null && body == 1) {\n            message = \"Got Code \" + body;\n        } else {\n            message = \"Got Unknown Code \" + body;\n        }\n        exchange.setProperty(\"ErrorProcessed\", false);\n        exchange.getMessage().setBody(message);\n    }\n\n    @BindToRegistry\n    public Processor beanHandler() {\n\t\t\t\t//beanHandler is the one that get in the registry\n        return this;\n    }\n}"
+    name: "BeanHandler.java"
+  - content: "import org.apache.camel.BindToRegistry;\nimport org.apache.camel.Processor;\nimport org.apache.camel.Handler;\n\npublic class Calculator extends org.apache.camel.builder.RouteBuilder {\n\n    @Handler\n    public Integer sumNumbers(Integer n1, Integer n2) {\n    \t\t//Calculator is the Bean and sumNumbers the method\n        return n1+n2;\n    }\n\n    @Override\n    public void configure() {}\n}"
     name: "Calculator.java"
   traits:
     jolokia:
       configuration:
+        enabled: true
+    jvm:
+      configuration:
+        classpath: "/etc/camel/resources/MultiplierFile.jar"
         enabled: true
     logging:
       configuration:
