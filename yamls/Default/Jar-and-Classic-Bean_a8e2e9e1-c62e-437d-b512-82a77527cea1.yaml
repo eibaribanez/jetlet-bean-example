@@ -3,9 +3,9 @@ apiVersion: "camel.apache.org/v1"
 kind: "Integration"
 metadata:
   labels:
-    jetic.io/deployment.uuid: "388e4cd9-646e-4881-8267-2dc89bda4b0a"
+    jetic.io/deployment.uuid: "42a0136b-6ac9-4e2d-a463-da18805d6abb"
     jetic.io/integration.name: "Jar-and-Classic-Bean"
-    jetic.io/integration.revision: "70"
+    jetic.io/integration.revision: "72"
     jetic.io/integration.uuid: "a8e2e9e1-c62e-437d-b512-82a77527cea1"
     jetic.io/log.level: "INFO"
     jetic.io/data.analyzer: "false"
