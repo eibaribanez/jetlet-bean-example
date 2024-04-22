@@ -1,14 +1,14 @@
 {
   "type" : "SOURCE_DEFINITIONS",
   "properties" : {
-    "content" : "import org.apache.camel.BindToRegistry;\nimport com.java.examples.Multiplier;\n\npublic class MultiplierJavaClassImport {\n    @BindToRegistry\n    public Multiplier multiplier() {\n\t\t\t\t//beanHandler is the one that get in the registry\n        return new Multiplier();\n    }\n}",
+    "content" : "import org.apache.camel.BindToRegistry;\nimport com.java.examples.Multiplier;\n\npublic class MultiplierJavaClassImport {\n    @BindToRegistry\n    public Multiplier multiplier() {\n\t\t\t\t//multiplier is the one that gets in the registry to then use all its methods\n        return new Multiplier();\n    }\n}",
     "filename" : "MultiplierJavaClassImport.java"
   },
   "id" : "7ae040be-f578-4c2c-adc5-64edb4e8fddd",
   "name" : "MultiplierJavaClassImport",
   "description" : "MultiplierJavaClassImport",
   "createdAt" : "2024-04-22T20:02:46.55516718",
-  "updatedAt" : "2024-04-22T20:47:27.607075",
+  "updatedAt" : "2024-04-22T21:43:23.813360107",
   "createdBy" : "78ffd80a-79d7-45e8-bc38-6d30b9d5baa2",
   "updatedBy" : "78ffd80a-79d7-45e8-bc38-6d30b9d5baa2"
 }
