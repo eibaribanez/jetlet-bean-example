@@ -1,0 +1,18 @@
+{
+  "type" : "BEANS",
+  "properties" : {
+    "codeGroovy" : "beans {\n    myString = 'Hello World!'\n\n    myProcessor = processor { \n        it.in.body = 'Hello from Groovy'\n    }\n\n    myPredicate = predicate {\n        it.in.body != null\n    }\n}",
+    "codeJava" : "@Handler\npublic Integer sumNumbers(Integer n1, Integer n2) {\n    return n1+n2;\n}",
+    "content" : "",
+    "importsGroovy" : null,
+    "importsJava" : "import org.apache.camel.BindToRegistry;\nimport org.apache.camel.Processor;\nimport org.apache.camel.Handler;",
+    "type" : "Java"
+  },
+  "id" : "5c5d364d-4b86-4ed4-ad95-b9d56a44c223",
+  "name" : "Calculator",
+  "description" : "Calculator",
+  "createdAt" : "2024-04-22T18:18:52.050290154",
+  "updatedAt" : "2024-04-22T18:43:41.556128812",
+  "createdBy" : "78ffd80a-79d7-45e8-bc38-6d30b9d5baa2",
+  "updatedBy" : "78ffd80a-79d7-45e8-bc38-6d30b9d5baa2"
+}

@@ -1,0 +1,81 @@
+---
+apiVersion: "camel.apache.org/v1"
+kind: "Integration"
+metadata:
+  labels:
+    jetic.io/deployment.uuid: "c33c20fe-f8e3-4f37-9c58-4132f821cd71"
+    jetic.io/integration.name: "Jar-and-Classic-Bean"
+    jetic.io/integration.revision: "20"
+    jetic.io/integration.uuid: "a8e2e9e1-c62e-437d-b512-82a77527cea1"
+    jetic.io/log.level: "INFO"
+    jetic.io/data.analyzer: "false"
+    jetic.io/profile.name: "Default"
+    jetic.io/profile.uuid: "cb34a175-7664-438e-9d8f-481373aa66ff"
+  name: "jar-and-classic-bean"
+spec:
+  configuration:
+  - type: "property"
+    value: "quarkus.log.console.color=true"
+  - type: "property"
+    value: "quarkus.log.console.level=INFO"
+  dependencies: []
+  replicas: 1
+  resources: []
+  sources:
+  - compression: false
+    content: |-
+      //
+      // To run this integration use:
+      //
+      // kamel run Jar_and_Classic_Bean.groovy
+      //
+
+      // camel-k: language=groovy
+      // camel-k: name=Jar-and-Classic-Bean
+
+      import org.apache.camel.LoggingLevel
+
+      from('timer:timer?daemon=true&delay=2000&fixedRate=false&period=10000&repeatCount=0').routeId('route-1')
+          .log(LoggingLevel.INFO, 'log', 'Classic Jetic Bean').id('log: 00')
+          .setHeader('n1').constant('2').id('setHeaders: 00-00')
+          .setHeader('n2').constant('4').id('setHeaders: 00-01')
+          .to('bean:Calculator?method=sumNumbers(${header.n1}, ${header.n2})').id('bean: 00')
+          .log(LoggingLevel.INFO, 'log', 'Result: ${body}').id('log: 01')
+    name: "Jar-and-Classic-Bean.groovy"
+  - content: |-
+      import org.apache.camel.BindToRegistry;
+      import org.apache.camel.Processor;
+      import org.apache.camel.Handler;
+
+      public class Calculator extends org.apache.camel.builder.RouteBuilder {
+
+          @Handler
+          public Integer sumNumbers(Integer n1, Integer n2) {
+              return n1+n2;
+          }
+
+          @Override
+          public void configure() {}
+      }
+    name: "Calculator.java"
+  traits:
+    jolokia:
+      configuration:
+        enabled: true
+    logging:
+      configuration:
+        enabled: true
+        level: "DEBUG"
+    owner:
+      configuration:
+        enabled: true
+        targetLabels:
+        - "jetic.io/data.analyzer"
+        - "jetic.io/deployment.uuid"
+        - "jetic.io/integration.name"
+        - "jetic.io/integration.revision"
+        - "jetic.io/integration.uuid"
+        - "jetic.io/log.level"
+        - "jetic.io/open.api.host"
+        - "jetic.io/profile.name"
+        - "jetic.io/profile.uuid"
